@@ -1,6 +1,16 @@
 const dal = require('./dal');
 
-function getRunner(id, callback) {
+function getPhones(callback) {
+    dal.readAll(function (err, phonesData) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, phonesData);
+        }
+    })
+}
+
+function getPhone(id, callback) {
     dal.readOne(id, function (err, runnerData) {
         if (err) {
             callback(err);
@@ -10,17 +20,7 @@ function getRunner(id, callback) {
     })
 }
 
-function getRunners(callback) {
-    dal.readAll(function (err, runnerData) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, runnerData);
-        }
-    })
-}
-
-function createRunner(runner, callback) {
+function createPhone(runner, callback) {
     let date = new Date;
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
@@ -48,7 +48,7 @@ function editRunner(id, callback) {
     })
 }
 
-function updateRunner(runner, callback) {
+function updatePhone(runner, callback) {
     let date = new Date;
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
@@ -66,7 +66,7 @@ function updateRunner(runner, callback) {
     })
 }
 
-function deleteRunner(runner, callback) {
+function deletePhone(runner, callback) {
     dal.deleteOne(runner, function (err, runnerData) {
         if (err) {
             callback(err);
@@ -76,9 +76,8 @@ function deleteRunner(runner, callback) {
     })
 }
 
-module.exports.getRunners = getRunners;
-module.exports.getRunner = getRunner;
-module.exports.createRunner = createRunner;
-module.exports.updateRunner = updateRunner;
-module.exports.editRunner = editRunner;
-module.exports.deleteRunner = deleteRunner;
+module.exports.getPhones = getPhones;
+module.exports.getPhone = getPhone;
+module.exports.createPhone = createPhone;
+module.exports.updatePhone = updatePhone;
+module.exports.deletePhone = deletePhone;

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form novalidate>
+        <label>id: <input name="id" placeholder="id"></label>
+        <label>name: <input name="name" placeholder="name"></label>
+        <label>img: <input name="name" placeholder="img"></label>
+        <label>snippet: <input name="name" placeholder="snippet"></label>
+        <button id='add'>Add</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Phone id</th>
+                <th>Phone name</th>
+                <th>Phone image</th>
+                <th>Phone snippet</th>
+            </tr>
+        </thead>
+        <tbody id='phones'>
+
+        </tbody>
+    </table>
+    <script>
+        const phoneEndpoint = '/phone';
+        document.getElementById('add').addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const phone = {
+                id: this.form.id.value,
+                name: this.form.name.value,
+                img: this.form.img.value,
+                snippet: this.form.snippet.value
+            };
+
+            fetch(phoneEndpoint, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
+                body: JSON.stringify(phone)
+            }).then(responseData => {
+                console.log(responseData);
+            }).catch(err => {
+                alert('not inserted')
+            });
+        })
+
+        fetch(phoneEndpoint).then(phoneData => {
+            phoneData.json().then(phonesTableView);
+        })
+
+        function phonesTableView(phones) {
+            let html = '';
+            for (let i = 0; i < phones.length; i++) {
+                html += `<tr>
+                    <td>${phones[i].id}</td>
+                    <td>${phones[i].name}</td>
+                    <td><img src="${phones[i].imageUrl}" style="width:100px"></td>
+                    <td>${phones[i].snippet}</td>
+                </tr>`
+            }
+            document.getElementById('phones').innerHTML = html;
+
+        }
+    </script>
+</body>
+
+</html>

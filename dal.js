@@ -1,5 +1,13 @@
 const fs = require('fs');
 
+function readAll(callback) {
+    const fileName = 'phones/phones.json';
+    fs.readFile(fileName, (e, d) => {
+        const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        callback(null, data);
+    });
+}
+
 function readOne(id, callback) {
     const fileName = 'runner.txt';
     fs.readFile(fileName, (e, d) => {
@@ -7,14 +15,6 @@ function readOne(id, callback) {
         data = data.filter(runner => runner.id.toString() === id);
         let [dataOne] = data;
         callback(null, dataOne);
-    });
-}
-
-function readAll(callback) {
-    const fileName = 'runner.txt';
-    fs.readFile(fileName, (e, d) => {
-        const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        callback(null, data);
     });
 }
 
