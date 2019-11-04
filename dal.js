@@ -30,28 +30,16 @@ function saveOne(newPhone, callback) {
             else {
                 callback(null);
             }
-
         });
     });
 }
 
-function editOne(id, callback) {
-    const fileName = 'runner.txt';
-    fs.readFile(fileName, (e, d) => {
-        let data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        data = data.filter(runner => runner.id.toString() === id);
-        let [dataOne] = data;
-        callback(null, dataOne);
-    });
-}
-
-function updateOne(runner, callback) {
-    const fileName = 'runner.txt';
+function updateOne(phone, callback) {
+    const fileName = 'phones/phones.json';
     fs.readFile(fileName, (e, d) => {
         const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        const index = data.findIndex(({ id }) => id.toString() === runner.id);
-        runner.createdDate = data[index].createdDate;
-        data[index] = runner;
+        const index = data.findIndex(({ id }) => id.toString() === phone.id);
+        data[index] = phone;
         fs.writeFile(fileName, JSON.stringify(data), (e) => {
             if (e) {
                 console.log(e);
@@ -60,7 +48,6 @@ function updateOne(runner, callback) {
             else {
                 callback(null);
             }
-
         });
     });
 }
@@ -87,5 +74,4 @@ module.exports.readAll = readAll;
 module.exports.readOne = readOne;
 module.exports.saveOne = saveOne;
 module.exports.updateOne = updateOne;
-module.exports.editOne = editOne;
 module.exports.deleteOne = deleteOne;

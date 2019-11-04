@@ -30,30 +30,12 @@ function createPhone(newPhoneData, callback) {
     })
 }
 
-function editRunner(id, callback) {
-    dal.editOne(id, function (err, runnerData) {
+function updatePhone(phone, callback) {
+    dal.updateOne(phone, function (err, data) {
         if (err) {
             callback(err);
         } else {
-            callback(null, runnerData);
-        }
-    })
-}
-
-function updatePhone(runner, callback) {
-    let date = new Date;
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-    let hour = date.getHours();
-    let min = date.getMinutes();
-    let dateF = `${year}-${month}-${day} ${hour}:${min}`;
-    runner.updatedDate = dateF;
-    dal.updateOne(runner, function (err, runnerData) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, runnerData);
+            callback(null, data);
         }
     })
 }

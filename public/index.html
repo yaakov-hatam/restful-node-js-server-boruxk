@@ -49,6 +49,7 @@
                 body: JSON.stringify(phone)
             }).then(responseData => {
                 console.log(responseData);
+                location.reload(); 
             }).catch(err => {
                 alert('not inserted')
             });
@@ -94,7 +95,48 @@
                 })
                 //edit
                 document.getElementById(`edit-${phones[i].id}`).addEventListener('click', function (e) {
-
+                    fetch(phoneEndpointOne).then(phoneData => {
+                        phoneData.json().then(phoneEdit);
+                    })
+                    function phoneEdit(phone) {
+                        let htmlOne = '';
+                        htmlOne += `<div style="background-color:#efe6d7; padding:30px; margin-top:20px; margin-bottom:20px">
+                                        <form novalidate>
+                                            <label>id: <input name="id" value="${phone.id}"></label>
+                                            <label>name: <input name="name" value="${phone.name}"></label>
+                                            <label>img: <input name="img" value="${phone.img}"></label>
+                                            <label>snippet: <input name="snippet" value="${phone.snippet}"></label>
+                                            <button id='save'>Save</button>
+                                        </form>
+                                        <p style="font-weight:bold; color:red; cursor: pointer; float:right;" id="close-${phone.id}">CLOSE</p>
+                                    </div>`
+                        document.getElementById('phone').innerHTML = htmlOne;
+                        document.getElementById(`close-${phone.id}`).addEventListener('click', function (e) {
+                            let htmlOne = '';
+                            document.getElementById('phone').innerHTML = htmlOne;
+                        })
+                        document.getElementById('save').addEventListener('click', function (e) {
+                            e.preventDefault();
+                            let phone = {
+                                id: this.form.id.value,
+                                name: this.form.name.value,
+                                img: this.form.img.value,
+                                snippet: this.form.snippet.value
+                            };
+                            fetch(phoneEndpointOne, {
+                                method: "PUT",
+                                headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
+                                body: JSON.stringify(phone)
+                            }).then(responseData => {
+                                console.log(responseData);
+                                let htmlOne = '';
+                                document.getElementById('phone').innerHTML = htmlOne;
+                                location.reload(); 
+                            }).catch(err => {
+                                alert('not inserted')
+                            });
+                        })
+                    }
                 })
                 //delete
                 document.getElementById(`delete-${phones[i].id}`).addEventListener('click', function (e) {
@@ -108,6 +150,7 @@
                             body: JSON.stringify(phone)
                         }).then(responseData => {
                             console.log(responseData);
+                            location.reload();
                         }).catch(err => {
                             alert('not inserted')
                         });

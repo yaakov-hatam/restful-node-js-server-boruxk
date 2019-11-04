@@ -41,11 +41,12 @@ app.post('/phone', (req, res) => {
 });
 
 app.put('/phone/:id', (req, res) => {
-    phoneBl.updatePhone(req.body, function (e, data) {
+    let phone = req.body;
+    phoneBl.updatePhone(phone, function (e, data) {
         if (e) {
             return res.status(500).send();
         } else {
-            return res.status(200).send();
+            return res.send(data);
         }
     })
 });
