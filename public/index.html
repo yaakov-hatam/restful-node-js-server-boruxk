@@ -12,8 +12,8 @@
     <form novalidate>
         <label>id: <input name="id" placeholder="id"></label>
         <label>name: <input name="name" placeholder="name"></label>
-        <label>img: <input name="name" placeholder="img"></label>
-        <label>snippet: <input name="name" placeholder="snippet"></label>
+        <label>img: <input name="img" placeholder="img"></label>
+        <label>snippet: <input name="snippet" placeholder="snippet"></label>
         <button id='add'>Add</button>
     </form>
     <div id="phone"></div>
@@ -24,15 +24,18 @@
                 <th>Phone name</th>
                 <th>Phone image</th>
                 <th>Phone snippet</th>
+                <th>Edit / Delete</th>
             </tr>
         </thead>
         <tbody id='phones'>
-
         </tbody>
     </table>
+
+
     <script>
         const phoneEndpoint = '/phone';
         document.getElementById('add').addEventListener('click', function (e) {
+            //add
             e.preventDefault();
             const phone = {
                 id: this.form.id.value,
@@ -55,19 +58,22 @@
             phonesData.json().then(phonesTableView);
         })
         function phonesTableView(phones) {
+            //show all
             let html = '';
             for (let i = 0; i < phones.length; i++) {
                 html += `<tr>
                     <td>${phones[i].id}</td>
                     <td id="${phones[i].id}" style="color:#008CDD; cursor: pointer;">${phones[i].name}</td>
                     <td><img src="${phones[i].imageUrl}" style="width:100px"></td>
-                    <td>${phones[i].snippet}</td>
+                    <td style="width:50%">${phones[i].snippet}</td>
+                    <td><button id="edit-${phones[i].id}" style="float:left">EDIT</button><button id="delete-${phones[i].id}" style="float:right">DELETE</button></td>
                 </tr>`
             }
             document.getElementById('phones').innerHTML = html;
             for (let i = 0; i < phones.length; i++) {
+                const phoneEndpointOne = `/phone/${phones[i].id}`;
+                //show one
                 document.getElementById(phones[i].id).addEventListener('click', function (e) {
-                    const phoneEndpointOne = `/phone/${phones[i].id}`;
                     fetch(phoneEndpointOne).then(phoneData => {
                         phoneData.json().then(phoneView);
                     })
@@ -86,10 +92,29 @@
                         })
                     }
                 })
+                //edit
+                document.getElementById(`edit-${phones[i].id}`).addEventListener('click', function (e) {
+
+                })
+                //delete
+                document.getElementById(`delete-${phones[i].id}`).addEventListener('click', function (e) {
+                    fetch(phoneEndpointOne).then(phoneData => {
+                        phoneData.json().then(phoneDelete);
+                    })
+                    function phoneDelete(phone) {
+                        fetch(phoneEndpointOne, {
+                            method: "DELETE",
+                            headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
+                            body: JSON.stringify(phone)
+                        }).then(responseData => {
+                            console.log(responseData);
+                        }).catch(err => {
+                            alert('not inserted')
+                        });
+                    }
+                })
             }
         }
-
-
     </script>
 </body>
 

@@ -18,15 +18,13 @@ function readOne(id, callback) {
     });
 }
 
-function saveOne(runner, callback) {
-    const fileName = 'runner.txt';
+function saveOne(newPhone, callback) {
+    const fileName = 'phones/phones.json';
     fs.readFile(fileName, (e, d) => {
         const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        runner.id = data.length +1;
-        data.push(runner);
+        data.push(newPhone);
         fs.writeFile(fileName, JSON.stringify(data), (e) => {
             if (e) {
-                console.log(e);
                 callback('error');
             }
             else {
@@ -67,11 +65,11 @@ function updateOne(runner, callback) {
     });
 }
 
-function deleteOne(runner, callback) {
-    const fileName = 'runner.txt';
+function deleteOne(idToDelete, callback) {
+    const fileName = 'phones/phones.json';
     fs.readFile(fileName, (e, d) => {
         const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        const data2 = data.filter(({ id }) => id.toString() !== runner.id);
+        const data2 = data.filter(({ id }) => id.toString() !== idToDelete);
         fs.writeFile(fileName, JSON.stringify(data2), (e) => {
             if (e) {
                 console.log(e);

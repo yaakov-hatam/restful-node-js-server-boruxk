@@ -30,7 +30,8 @@ app.get('/phone/:id', (req, res) => {
 });
 
 app.post('/phone', (req, res) => {
-    phoneBl.createPhone(req.body, function (e, data) {
+    let newPhoneData = req.body;
+    phoneBl.createPhone(newPhoneData, function (e, data) {
         if (e) {
             return res.status(500).send();
         } else {
@@ -50,7 +51,8 @@ app.put('/phone/:id', (req, res) => {
 });
 
 app.delete('/phone/:id', (req, res) => {
-    phoneBl.deletePhone(req.params.id, function (e, data) {
+    let id = req.params.id;
+    phoneBl.deletePhone(id, function (e, data) {
         if (e) {
             return res.status(500).send();
         } else {

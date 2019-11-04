@@ -20,20 +20,12 @@ function getPhone(id, callback) {
     })
 }
 
-function createPhone(runner, callback) {
-    let date = new Date;
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-    let hour = date.getHours();
-    let min = date.getMinutes();
-    let dateF = `${year}-${month}-${day} ${hour}:${min}`;
-    runner.createdDate = dateF;
-    dal.saveOne(runner, function (err, runnerData) {
+function createPhone(newPhoneData, callback) {
+    dal.saveOne(newPhoneData, function (err, data) {
         if (err) {
             callback(err);
         } else {
-            callback(null, runnerData);
+            callback(null, data);
         }
     })
 }
@@ -66,12 +58,12 @@ function updatePhone(runner, callback) {
     })
 }
 
-function deletePhone(runner, callback) {
-    dal.deleteOne(runner, function (err, runnerData) {
+function deletePhone(id, callback) {
+    dal.deleteOne(id, function (err, data) {
         if (err) {
             callback(err);
         } else {
-            callback(null, runnerData);
+            callback(null, data);
         }
     })
 }
