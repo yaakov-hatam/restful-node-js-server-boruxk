@@ -9,10 +9,10 @@ function readAll(callback) {
 }
 
 function readOne(id, callback) {
-    const fileName = 'runner.txt';
+    const fileName = 'phones/phones.json';
     fs.readFile(fileName, (e, d) => {
         let data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        data = data.filter(runner => runner.id.toString() === id);
+        data = data.filter(phone => phone.id.toString() === id);
         let [dataOne] = data;
         callback(null, dataOne);
     });

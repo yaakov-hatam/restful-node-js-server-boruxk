@@ -16,6 +16,7 @@
         <label>snippet: <input name="name" placeholder="snippet"></label>
         <button id='add'>Add</button>
     </form>
+    <div id="phone"></div>
     <table>
         <thead>
             <tr>
@@ -33,14 +34,12 @@
         const phoneEndpoint = '/phone';
         document.getElementById('add').addEventListener('click', function (e) {
             e.preventDefault();
-            
             const phone = {
                 id: this.form.id.value,
                 name: this.form.name.value,
                 img: this.form.img.value,
                 snippet: this.form.snippet.value
             };
-
             fetch(phoneEndpoint, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
@@ -52,23 +51,45 @@
             });
         })
 
-        fetch(phoneEndpoint).then(phoneData => {
-            phoneData.json().then(phonesTableView);
+        fetch(phoneEndpoint).then(phonesData => {
+            phonesData.json().then(phonesTableView);
         })
-
         function phonesTableView(phones) {
             let html = '';
             for (let i = 0; i < phones.length; i++) {
                 html += `<tr>
                     <td>${phones[i].id}</td>
-                    <td>${phones[i].name}</td>
+                    <td id="${phones[i].id}" style="color:#008CDD; cursor: pointer;">${phones[i].name}</td>
                     <td><img src="${phones[i].imageUrl}" style="width:100px"></td>
                     <td>${phones[i].snippet}</td>
                 </tr>`
             }
             document.getElementById('phones').innerHTML = html;
-
+            for (let i = 0; i < phones.length; i++) {
+                document.getElementById(phones[i].id).addEventListener('click', function (e) {
+                    const phoneEndpointOne = `/phone/${phones[i].id}`;
+                    fetch(phoneEndpointOne).then(phoneData => {
+                        phoneData.json().then(phoneView);
+                    })
+                    function phoneView(phone) {
+                        let htmlOne = '';
+                        htmlOne += `<div style="background-color:#efe6d7; padding:30px; margin-top:20px; margin-bottom:20px">
+                            <div>${phone.id}</div>
+                            <div><h1>${phone.name}</h1> <p style="font-weight:bold; color:red; cursor: pointer; float:right;" id="close-${phone.id}">CLOSE</p></div>
+                            <div><img src="${phone.imageUrl}" style="width:200px"></div>
+                            <div>${phone.snippet}</div>
+                        </div>`
+                        document.getElementById('phone').innerHTML = htmlOne;
+                        document.getElementById(`close-${phone.id}`).addEventListener('click', function (e) {
+                            let htmlOne = '';
+                            document.getElementById('phone').innerHTML = htmlOne;
+                        })
+                    }
+                })
+            }
         }
+
+
     </script>
 </body>
 
