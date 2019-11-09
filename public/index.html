@@ -49,15 +49,17 @@
                 body: JSON.stringify(phone)
             }).then(responseData => {
                 console.log(responseData);
-                location.reload(); 
+                setView();
             }).catch(err => {
                 alert('not inserted')
             });
         })
-
-        fetch(phoneEndpoint).then(phonesData => {
-            phonesData.json().then(phonesTableView);
-        })
+        function setView() {
+            fetch(phoneEndpoint).then(phonesData => {
+                phonesData.json().then(phonesTableView);
+            })
+        }
+        setView();
         function phonesTableView(phones) {
             //show all
             let html = '';
@@ -131,7 +133,7 @@
                                 console.log(responseData);
                                 let htmlOne = '';
                                 document.getElementById('phone').innerHTML = htmlOne;
-                                location.reload(); 
+                                setView();
                             }).catch(err => {
                                 alert('not inserted')
                             });
@@ -144,13 +146,14 @@
                         phoneData.json().then(phoneDelete);
                     })
                     function phoneDelete(phone) {
+                        e.preventDefault();
                         fetch(phoneEndpointOne, {
                             method: "DELETE",
                             headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
                             body: JSON.stringify(phone)
                         }).then(responseData => {
                             console.log(responseData);
-                            location.reload();
+                            setView();
                         }).catch(err => {
                             alert('not inserted')
                         });
