@@ -1,5 +1,7 @@
+delete require.cache[require.resolve('./dal')];
 const dalFunc = require('./dal');
 const dal = dalFunc('phones/token.json');
+
 const uuidv4 = require('uuid/v4');
 
 function createToken(newUser, callback) {

@@ -1,4 +1,6 @@
-const dal = require('./dal')('phones/phones.json');
+delete require.cache[require.resolve('./dal')];
+const dalFunc = require('./dal');
+const dal = dalFunc('phones/phones.json');
 
 function getPhones(callback) {
     dal.readAll(function (err, phonesData) {
