@@ -9,6 +9,11 @@
 </head>
 
 <body>
+    <form>
+        <input name="name2" placeholder="name">
+        <button id='addtoken'>Get token</button>
+        <input id="gottoken">
+    </form>
     <form novalidate>
         <label>id: <input name="id" placeholder="id"></label>
         <label>name: <input name="name" placeholder="name"></label>
@@ -33,6 +38,29 @@
 
 
     <script>
+        const tokenEndpoint = "/token";
+        document.getElementById('addtoken').addEventListener('click', function (e) {
+                //add token
+                e.preventDefault();
+                const newUser = {
+                    name: this.form.name2.value
+                };
+                
+                fetch(tokenEndpoint, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
+                    body: JSON.stringify(newUser)
+                }).then(responseData => {
+                    responseData.text().then(a => {
+                        console.log(a);
+                        let obj = JSON.parse(a);
+                        this.form.gottoken.value = obj.key;
+                    });
+                }).catch(err => {
+                    alert('not inserted')
+                });
+            })
+
         const phoneEndpoint = '/phone';
         document.getElementById('add').addEventListener('click', function (e) {
             //add

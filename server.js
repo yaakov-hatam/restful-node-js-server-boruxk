@@ -22,7 +22,9 @@ app.use(function (req, res, next) {
 });
 
 const phoneRouter = require('./routes/phone');
+const tokenRouter = require('./routes/token');
 app.use('/phone', phoneRouter);
+app.use('/token', tokenRouter);
 
 app.listen(process.env.PORT || PORT, () =>
     console.log(`App listening on port ${PORT}!`),

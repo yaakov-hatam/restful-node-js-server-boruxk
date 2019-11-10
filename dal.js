@@ -1,7 +1,7 @@
 const fs = require('fs');
+let fileName = '';
 
 function readAll(callback) {
-    const fileName = 'phones/phones.json';
     fs.readFile(fileName, (e, d) => {
         const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         callback(null, data);
@@ -9,7 +9,6 @@ function readAll(callback) {
 }
 
 function readOne(id, callback) {
-    const fileName = 'phones/phones.json';
     fs.readFile(fileName, (e, d) => {
         let data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         data = data.filter(phone => phone.id.toString() === id);
@@ -18,9 +17,9 @@ function readOne(id, callback) {
     });
 }
 
-function saveOne(newPhone, callback) {
-    const fileName = 'phones/phones.json';
-    fs.readFile(fileName, (e, d) => {
+function saveOne(newPhone, callback) {  
+     
+    fs.readFile(fileName, (e, d) => {   
         const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         data.push(newPhone);
         fs.writeFile(fileName, JSON.stringify(data), (e) => {
@@ -35,7 +34,6 @@ function saveOne(newPhone, callback) {
 }
 
 function updateOne(phone, callback) {
-    const fileName = 'phones/phones.json';
     fs.readFile(fileName, (e, d) => {
         const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         const index = data.findIndex(({ id }) => id.toString() === phone.id);
@@ -53,7 +51,6 @@ function updateOne(phone, callback) {
 }
 
 function deleteOne(idToDelete, callback) {
-    const fileName = 'phones/phones.json';
     fs.readFile(fileName, (e, d) => {
         const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         const data2 = data.filter(({ id }) => id.toString() !== idToDelete);
@@ -70,8 +67,15 @@ function deleteOne(idToDelete, callback) {
     });
 }
 
-module.exports.readAll = readAll;
-module.exports.readOne = readOne;
-module.exports.saveOne = saveOne;
-module.exports.updateOne = updateOne;
-module.exports.deleteOne = deleteOne;
+function dalModule(_fileName) {
+    fileName = _fileName;
+    return {
+        readAll: readAll,
+        readOne: readOne,
+        saveOne: saveOne,
+        updateOne: updateOne,
+        deleteOne: deleteOne
+    }
+}
+
+module.exports = dalModule;
